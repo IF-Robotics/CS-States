@@ -2,24 +2,36 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveSubsystem extends SubsystemBase {
-    Motor FL, FR, BR, BL;
+    DcMotor FL, FR, BR, BL;
     IMU imu;
     double integralSum = 0;
     double Kp=1,Ki=.1,Kd=0.0001;
     ElapsedTime timer = new ElapsedTime();
     double target = 0, referenceAngle = 0, lastError=0;
 
-    public DriveSubsystem(Motor FL, Motor FR, Motor BR, Motor BL, IMU imu) {
+    public DriveSubsystem(DcMotor FL, DcMotor FR, DcMotor BR, DcMotor BL, IMU imu) {
         this.BL = BL;
         this.FL = FL;
         this.FR = FR;
         this.BR = BR;
         this.imu = imu;
+
+        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        BL.setDirection(DcMotorSimple.Direction.REVERSE);
+        FL.setDirection(DcMotorSimple.Direction.REVERSE);
+        BR.setDirection(DcMotorSimple.Direction.FORWARD);
+        FR.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void setPower(double power) {
@@ -27,6 +39,10 @@ public class DriveSubsystem extends SubsystemBase {
         WriteSubsystem.motorNewPower.put(BL, power);
         WriteSubsystem.motorNewPower.put(FR, power);
         WriteSubsystem.motorNewPower.put(BR, power);
+    }
+
+    public void straighten(int target) {
+        this.target = target;
     }
 
     public void teleDrive(Gamepad gamepad1) {
@@ -60,6 +76,18 @@ public class DriveSubsystem extends SubsystemBase {
         double backLeftPower = (rotY - rotX + rx) / denominator;
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
+        FL.setPower(frontLeftPower);
+        BL.setPower(backLeftPower);
+        FR.setPower(frontRightPower);
+        BR.setPower(backRightPower);
+        WriteSubsystem.motorNewPower.put(FL, frontLeftPower);
+        WriteSubsystem.motorNewPower.put(BL, backLeftPower);
+        WriteSubsystem.motorNewPower.put(FR, frontRightPower);
+        WriteSubsystem.motorNewPower.put(BR, backRightPower);
+//        FL.setPower(gamepad1.left_stick_y);
+//        BL.setPower(gamepad1.left_stick_y);
+//        FR.setPower(gamepad1.right_stick_y);
+//        BR.setPower(gamepad1.right_stick_y);
     }
 
     public double angleWrap(double radians) {

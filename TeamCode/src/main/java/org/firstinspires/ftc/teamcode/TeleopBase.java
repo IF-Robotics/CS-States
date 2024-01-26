@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.widget.Button;
+
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -8,12 +10,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp
 public class TeleopBase extends CommandOpMode {
     Command teleDrive;
-    Main robot = new Main(true, hardwareMap, telemetry);
+    Button r2;
+    Main robot;
     @Override
     public void initialize() {
+        robot = new Main(true, hardwareMap, telemetry);
         configureButtons();
         configureCommands();
         bindTriggers();
+    }
+
+    @Override
+    public void run() {
+        super.run();
     }
 
     public void bindTriggers() {

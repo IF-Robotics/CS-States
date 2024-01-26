@@ -2,10 +2,11 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class InSlideSubsystem extends SubsystemBase {
-    Motor inSlideL, inSlideR;
-    public InSlideSubsystem(Motor inSlideL, Motor inSlideR) {
+    DcMotor inSlideL, inSlideR;
+    public InSlideSubsystem(DcMotor inSlideL, DcMotor inSlideR) {
         this.inSlideL = inSlideL;
         this.inSlideR = inSlideR;
     }

@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.HashMap;
 
 public class WriteSubsystem extends SubsystemBase {
-    private HashMap<Motor, Double> motorCurrentPower;
-    public static HashMap<Motor, Double> motorNewPower;
+    private HashMap<DcMotor, Double> motorCurrentPower;
+    public static HashMap<DcMotor, Double> motorNewPower;
     private HashMap<Servo, Double> servoCurrentPosition;
     public static HashMap<Servo, Double> servoNewPosition;
     private CRServo inSpin;
@@ -17,8 +18,12 @@ public class WriteSubsystem extends SubsystemBase {
     public static double inSpinNewPower;
     double tempPower = 0, tempPosition = 0;
 
-    public WriteSubsystem(Motor[] motors, Servo[] servos, CRServo inSpin) {
-        for(Motor m: motors) {
+    public WriteSubsystem(DcMotor[] motors, Servo[] servos, CRServo inSpin) {
+        motorCurrentPower = new HashMap<>();
+        motorNewPower = new HashMap<>();
+        servoCurrentPosition = new HashMap<>();
+        servoNewPosition = new HashMap<>();
+        for(DcMotor m: motors) {
             motorCurrentPower.put(m, 0.0);
             motorNewPower.put(m, 0.0);
         }
@@ -34,10 +39,10 @@ public class WriteSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         //check all motors and update if needed
-        for(Motor m: motorCurrentPower.keySet()) {
+        for(DcMotor m: motorCurrentPower.keySet()) {
             tempPower = Math.round(motorNewPower.get(m) * 1000) / 1000;
             if(tempPower != motorCurrentPower.get(m)) {
-                m.set(tempPower);
+//                m.setPower(tempPower);
                 motorCurrentPower.put(m, tempPower);
             }
         }
