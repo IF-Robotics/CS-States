@@ -40,7 +40,7 @@ public class WriteSubsystem extends SubsystemBase {
     public void periodic() {
         //check all motors and update if needed
         for(DcMotor m: motorCurrentPower.keySet()) {
-            tempPower = Math.round(motorNewPower.get(m) * 1000) / 1000;
+            tempPower = motorNewPower.get(m);//Math.round(motorNewPower.get(m) * 1000) / 1000;
             if(tempPower != motorCurrentPower.get(m)) {
                 m.setPower(tempPower);
                 motorCurrentPower.put(m, tempPower);

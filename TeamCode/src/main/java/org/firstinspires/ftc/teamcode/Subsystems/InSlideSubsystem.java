@@ -29,8 +29,8 @@ public class InSlideSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        slidePower = slideController.calculate(ReadSubsystem.encoderValues.get(inSlideR), slidePosition);
-        WriteSubsystem.motorNewPower.put(inSlideR, slidePower);
-        WriteSubsystem.motorNewPower.put(inSlideL, slidePower);
+//        slidePower = slideController.calculate(ReadSubsystem.encoderValues.get(inSlideR), slidePosition);
+//        WriteSubsystem.motorNewPower.put(inSlideR, slidePower);
+//        WriteSubsystem.motorNewPower.put(inSlideL, slidePower);
     }
 }

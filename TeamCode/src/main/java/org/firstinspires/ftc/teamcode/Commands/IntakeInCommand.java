@@ -5,10 +5,10 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.Subsystems.InSlideSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 
-public class IntakeOutcommand extends CommandBase {
+public class IntakeInCommand extends CommandBase {
     IntakeSubsystem intakeSubsystem;
     InSlideSubsystem inSlideSubsystem;
-    public IntakeOutcommand(IntakeSubsystem intakeSubsystem, InSlideSubsystem inSlideSubsystem) {
+    public IntakeInCommand(IntakeSubsystem intakeSubsystem, InSlideSubsystem inSlideSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
         this.inSlideSubsystem = inSlideSubsystem;
         addRequirements(intakeSubsystem, inSlideSubsystem);
