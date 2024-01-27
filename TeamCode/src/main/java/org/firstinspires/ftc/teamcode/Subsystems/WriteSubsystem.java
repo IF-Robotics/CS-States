@@ -42,7 +42,7 @@ public class WriteSubsystem extends SubsystemBase {
         for(DcMotor m: motorCurrentPower.keySet()) {
             tempPower = Math.round(motorNewPower.get(m) * 1000) / 1000;
             if(tempPower != motorCurrentPower.get(m)) {
-//                m.setPower(tempPower);
+                m.setPower(tempPower);
                 motorCurrentPower.put(m, tempPower);
             }
         }

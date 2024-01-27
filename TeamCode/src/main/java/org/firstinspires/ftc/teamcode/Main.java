@@ -7,12 +7,14 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.OuttakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ReadSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.WriteSubsystem;
 
@@ -24,8 +26,9 @@ public class Main {
     private DcMotor inSlideL, inSlideR, outSlideL, outSlideR;
     private Servo inArm, drone, inWrist, outArmL, outArmR, outL, outR;
     private CRServo inSpin;
-    public Subsystem readSubsystem, writeSubsystem, intakeSubsystem, inSlideSubsystem, outtakeSubsystem, planeSubsystem;
+    public Subsystem readSubsystem, writeSubsystem, intakeSubsystem, inSlideSubsystem, planeSubsystem;
     public DriveSubsystem driveSubsystem;
+    public OuttakeSubsystem outtakeSubsystem;
     IMU imu;
     HardwareMap hardwareMap;
     Telemetry telemetry;
@@ -70,8 +73,9 @@ public class Main {
 
             /*inSlideL = new Motor(hardwareMap, "inSlideL");
             inSlideR = new Motor(hardwareMap, "inSlideR");
-            outSlideL = new Motor(hardwareMap, "outSlideL");
-            outSlideR = new Motor(hardwareMap, "ourSlideR");*/
+            outSlideL = new Motor(hardwareMap, "outSlideL");*/
+            outSlideR = hardwareMap.get(DcMotorEx.class, "outSlideR");
+            outSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
 
             DcMotor[] writeMotors = {BL, BR, FR, FL};//, inSlideL, inSlideR, outSlideL, outSlideR};
 

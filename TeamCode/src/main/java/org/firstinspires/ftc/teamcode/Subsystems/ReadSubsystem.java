@@ -40,6 +40,7 @@ public class ReadSubsystem extends SubsystemBase {
             encoderValues.put(m, m.getCurrentPosition());
         }
         sensorValues.put(imu, imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+        updateTelemetry.put("imu", sensorValues.get(imu));
 
         current = 0;
         for(DcMotorEx m: driveMotors) {
@@ -50,6 +51,7 @@ public class ReadSubsystem extends SubsystemBase {
         for(String s: updateTelemetry.keySet()) {
             telemetry.addData(s, updateTelemetry.get(s));
         }
+        updateTelemetry.clear();
 
         telemetry.update();
     }

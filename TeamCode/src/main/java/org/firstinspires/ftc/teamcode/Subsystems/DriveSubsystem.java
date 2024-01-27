@@ -12,7 +12,7 @@ public class DriveSubsystem extends SubsystemBase {
     DcMotor FL, FR, BR, BL;
     IMU imu;
     double integralSum = 0;
-    double Kp=1,Ki=.1,Kd=0.0001;
+    static double Kp=1,Ki=.1,Kd=0.0001;
     ElapsedTime timer = new ElapsedTime();
     double target = 0, referenceAngle = 0, lastError=0;
 
@@ -76,10 +76,10 @@ public class DriveSubsystem extends SubsystemBase {
         double backLeftPower = (rotY - rotX + rx) / denominator;
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
-        FL.setPower(frontLeftPower);
-        BL.setPower(backLeftPower);
-        FR.setPower(frontRightPower);
-        BR.setPower(backRightPower);
+//        FL.setPower(frontLeftPower);
+//        BL.setPower(backLeftPower);
+//        FR.setPower(frontRightPower);
+//        BR.setPower(backRightPower); TODO: test if this actually works
         WriteSubsystem.motorNewPower.put(FL, frontLeftPower);
         WriteSubsystem.motorNewPower.put(BL, backLeftPower);
         WriteSubsystem.motorNewPower.put(FR, frontRightPower);
