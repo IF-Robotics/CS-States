@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -8,6 +10,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,6 +31,7 @@ public class Main {
     private DcMotorEx inSlideL, inSlideR, outSlideL, outSlideR;
     private Servo inArm, drone, inWrist, outArmL, outArmR, outL, outR;
     private CRServo inSpin;
+    private DigitalChannel intakeLidarL, intakeLidarR, outtakeLidarL, outtakeLidarR, backdropLidar;
     public Subsystem readSubsystem, writeSubsystem; //intakeSubsystem, inSlideSubsystem, planeSubsystem;
     public DriveSubsystem driveSubsystem;
     public OuttakeSubsystem outtakeSubsystem;
@@ -94,12 +98,24 @@ public class Main {
 
             inSpin = hardwareMap.get(CRServo.class, "inSpin");
 
+            intakeLidarL = hardwareMap.get(DigitalChannel.class, "intakeLidarL");
+            intakeLidarR = hardwareMap.get(DigitalChannel.class, "intakeLidarR");
+            outtakeLidarL = hardwareMap.get(DigitalChannel.class, "outtakeLidarL");
+            outtakeLidarR = hardwareMap.get(DigitalChannel.class, "outtakeLidarR");
+            backdropLidar = hardwareMap.get(DigitalChannel.class, "backdropLidar");
+
+            intakeLidarL.setMode(DigitalChannel.Mode.INPUT);
+            intakeLidarR.setMode(DigitalChannel.Mode.INPUT);
+            outtakeLidarL.setMode(DigitalChannel.Mode.INPUT);
+            outtakeLidarR.setMode(DigitalChannel.Mode.INPUT);
+            backdropLidar.setMode(DigitalChannel.Mode.INPUT);
+
             Servo[] writeServos = {inArm, drone, inWrist, outArmL, outArmR, outL, outR};
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
 
             inSlideSubsystem = new InSlideSubsystem(inSlideL, inSlideR);
-            intakeSubsystem = new IntakeSubsystem(inSpin, inArm, inWrist);
-            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR);
+            intakeSubsystem = new IntakeSubsystem(inSpin, inArm, inWrist, intakeLidarL, intakeLidarR);
+            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR, outtakeLidarL, outtakeLidarR, backdropLidar);
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
             driveSubsystem = new DriveSubsystem(FL, FR, BR, BL, imu);
 //            scheduler.registerSubsystem(writeSubsystem, intakeSubsystem, inSlideSubsystem, outtakeSubsystem, driveSubsystem);

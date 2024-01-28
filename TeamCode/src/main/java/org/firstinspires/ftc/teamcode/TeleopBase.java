@@ -23,8 +23,8 @@ public class TeleopBase extends CommandOpMode {
     Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option;
     Main robot;
     GamepadEx gpad1, gpad2;
+    Trigger autodrop, autoIntake;
     Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset;
-    Trigger autodrop;
     double loopTime = 0;
     @Override
     public void initialize() {
@@ -71,7 +71,10 @@ public class TeleopBase extends CommandOpMode {
         //trigger to come back when 2 pixels are collected
 
         //climb: press and hold for to go out and then release to go back
+
+        //autoIntake.whenActive() TODO: Code Blinken or rumble to indicate pixels intaken
     }
+
 
     public void configureButtons() {
         r2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_RIGHT);
@@ -83,6 +86,8 @@ public class TeleopBase extends CommandOpMode {
         lb2 = new GamepadButton(gpad2, GamepadKeys.Button.LEFT_BUMPER);
         up2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_UP);
         down2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_DOWN);
+        autoIntake = new Trigger(() -> robot.intakeSubsystem.getLidar());
+        autodrop = new Trigger(() -> robot.outtakeSubsystem.getBackdropLidar());
         option = new GamepadButton(gpad1, GamepadKeys.Button.START);
     }
 

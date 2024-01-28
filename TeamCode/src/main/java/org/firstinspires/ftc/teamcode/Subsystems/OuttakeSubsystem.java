@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 public class OuttakeSubsystem extends SubsystemBase {
     DcMotor outSlideL, outSlideR;
     Servo outArmL, outArmR, outL, outR;
+    private DigitalChannel outtakeLidarL, outtakeLidarR, backdropLidar;
     public static double p=0.003, i=0.2, d=0.000, f=0.00;
     public static final double armNeutral = .678, armOut = .328;
     private PIDFController slideController = new PIDFController(p,i,d,f);
@@ -27,13 +29,16 @@ public class OuttakeSubsystem extends SubsystemBase {
     public static double slidePosition = 0;
     public static FtcDashboard dashboard;
     Telemetry telemetry;
-    public OuttakeSubsystem(DcMotor outSlideL, DcMotor outSlideR, Servo outArmL, Servo outArmR, Servo outL, Servo outR) {
+    public OuttakeSubsystem(DcMotor outSlideL, DcMotor outSlideR, Servo outArmL, Servo outArmR, Servo outL, Servo outR, DigitalChannel outtakeLidarL, DigitalChannel outtakeLidarR, DigitalChannel backdropLidar) {
         this.outSlideL = outSlideL;
         this.outSlideR = outSlideR;
         this.outArmL = outArmL;
         this.outArmR = outArmR;
         this.outL = outL;
         this.outR = outR;
+        this.outtakeLidarL = outtakeLidarL;
+        this.outtakeLidarR = outtakeLidarR;
+        this.backdropLidar = backdropLidar;
     }
 
     public void setSlides(int position) {
@@ -63,6 +68,13 @@ public class OuttakeSubsystem extends SubsystemBase {
         WriteSubsystem.servoNewPosition.put(outR, rClose);
     }
 
+    public boolean getBackdropLidar() {
+        return backdropLidar.getState();
+    }
+
+    public boolean getPixelLidars() {
+        return outtakeLidarL.getState() && outtakeLidarR.getState();
+    }
     public int getSlidePosition() {
         return ReadSubsystem.encoderValues.get(outSlideL);
     }
