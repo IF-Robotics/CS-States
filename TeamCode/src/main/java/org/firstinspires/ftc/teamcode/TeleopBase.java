@@ -22,7 +22,7 @@ public class TeleopBase extends CommandOpMode {
     Button r2, l2, y2, x2, a2, down2, b2, up2;
     Main robot;
     GamepadEx gpad1, gpad2;
-    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut;
+    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer;
     Trigger autodrop;
     double loopTime = 0;
     @Override
@@ -49,6 +49,10 @@ public class TeleopBase extends CommandOpMode {
         //button for intake to go out and pick up pixels, come back when released
         down2.whileHeld(intakeOut);
         down2.whenReleased(intakeIn);
+
+        //transfer
+        x2.whileHeld(transfer);
+
         //button to out and up
         y2.whenPressed(armUp);
         b2.whenPressed(armMid);
@@ -72,6 +76,7 @@ public class TeleopBase extends CommandOpMode {
         y2 = new GamepadButton(gpad2, GamepadKeys.Button.Y);
         x2 = new GamepadButton(gpad2, GamepadKeys.Button.X);
         a2 = new GamepadButton(gpad2, GamepadKeys.Button.A);
+        up2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_UP);
         down2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_DOWN);
     }
 
@@ -85,5 +90,6 @@ public class TeleopBase extends CommandOpMode {
         armDown = new ArmDownCommand(robot.outtakeSubsystem, 0);
         intakeIn = new IntakeInCommand(robot.intakeSubsystem, robot.inSlideSubsystem);
         intakeOut = new IntakeOutcommand(robot.intakeSubsystem, robot.inSlideSubsystem);
+        transfer = new InstantCommand(()-> robot.intakeSubsystem.setInSpin(-.35));
     }
 }

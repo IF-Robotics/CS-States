@@ -18,6 +18,8 @@ public class WriteSubsystem extends SubsystemBase {
     public static double inSpinNewPower;
     double tempPower = 0, tempPosition = 0;
 
+    public static boolean isPixelTransfered = false, isArmUp = false, isExtendOut = false;
+
     public WriteSubsystem(DcMotor[] motors, Servo[] servos, CRServo inSpin) {
         motorCurrentPower = new HashMap<>();
         motorNewPower = new HashMap<>();

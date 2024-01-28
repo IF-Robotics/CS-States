@@ -87,21 +87,21 @@ public class Main {
             outL = hardwareMap.get(Servo.class, "outL");
             outR = hardwareMap.get(Servo.class, "outR");
 
+            inSpin = hardwareMap.get(CRServo.class, "inSpin");
+
             Servo[] writeServos = {inArm, drone, inWrist, outArmL, outArmR, outL, outR};
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
 
             inSlideSubsystem = new InSlideSubsystem(inSlideL, inSlideR);
             intakeSubsystem = new IntakeSubsystem(inSpin, inArm, inWrist);
             outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR);
-
-            inSpin = hardwareMap.get(CRServo.class, "inSpin");
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
             driveSubsystem = new DriveSubsystem(FL, FR, BR, BL, imu);
 //            scheduler.registerSubsystem(writeSubsystem, intakeSubsystem, inSlideSubsystem, outtakeSubsystem, driveSubsystem);
         }
 
         public void initTeleop() {
-            DcMotor[] motorEncoders = {outSlideL};//inSlideR, outSlideR};
+            DcMotor[] motorEncoders = {outSlideL, inSlideL};//inSlideR, outSlideR};
             DcMotorEx[] driveMotors = {FL, FR, BR, BL};
             readSubsystem = new ReadSubsystem(motorEncoders, driveMotors, imu, telemetry);
         }

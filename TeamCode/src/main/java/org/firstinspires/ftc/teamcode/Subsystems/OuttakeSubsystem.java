@@ -17,12 +17,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 public class OuttakeSubsystem extends SubsystemBase {
     DcMotor outSlideL, outSlideR;
     Servo outArmL, outArmR, outL, outR;
-    public static double p=0.003, i=0.2, d=0.000, f=0.00; //TODO: tune this
-    public static final double armNeutral = .72, armOut = .328;
+    public static double p=0.003, i=0.2, d=0.000, f=0.00;
+    public static final double armNeutral = .677, armOut = .328;
     private PIDFController slideController = new PIDFController(p,i,d,f);
     double slidePower = 0;
 
-    private static double lDrop = .13, rDrop = .62, lClose = .50, rClose = .14; //TODO: figure out these values
+    private static double lDrop = .13, rDrop = .62, lClose = .50, rClose = .14;
 
     public static double slidePosition;
     public static FtcDashboard dashboard;

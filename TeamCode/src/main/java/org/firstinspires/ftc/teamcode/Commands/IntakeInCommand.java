@@ -16,13 +16,13 @@ public class IntakeInCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        intakeSubsystem.setArm(intakeSubsystem.armDown);
-        intakeSubsystem.setWrist(intakeSubsystem.wristDown);
+        intakeSubsystem.setArm(intakeSubsystem.armNeutral);
+        intakeSubsystem.setWrist(intakeSubsystem.wristNeutral);
     }
 
     @Override
     public void execute() {
-        intakeSubsystem.setInSpin(1);
+        intakeSubsystem.setInSpin(.2);
     }
 
     @Override
