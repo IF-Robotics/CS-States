@@ -56,6 +56,7 @@ public class WriteSubsystem extends SubsystemBase {
                 s.setPosition(tempPosition);
                 servoCurrentPosition.put(s, tempPosition);
             }
+//            ReadSubsystem.updateTelemetry.put(s.toString() + "position", tempPosition);
         }
 
         if(inSpinNewPower != inSpinPower) {

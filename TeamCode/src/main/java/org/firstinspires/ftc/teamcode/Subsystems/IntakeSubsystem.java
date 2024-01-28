@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
-
+@Config
 public class IntakeSubsystem extends SubsystemBase {
     private Servo inArm, inWrist;
-    public static final double armNeutral = .060, wristNeutral = .094;
-    public static final double armDown = 1, wristDown = .905; //TODO: figure out these actual values
+    public static double armNeutral = .043, wristNeutral = .218;
+    public static double armDown = .843, wristDown = .976;
     private CRServo inSpin;
     public IntakeSubsystem(CRServo inSpin, Servo inArm, Servo inWrist) {
         this.inArm = inArm;
