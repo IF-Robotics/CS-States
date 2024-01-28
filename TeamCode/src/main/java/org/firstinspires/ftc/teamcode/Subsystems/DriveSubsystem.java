@@ -3,20 +3,21 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveSubsystem extends SubsystemBase {
-    DcMotor FL, FR, BR, BL;
+    DcMotorEx FL, FR, BR, BL;
     IMU imu;
     double integralSum = 0;
     static double Kp=1,Ki=.1,Kd=0.0001;
     ElapsedTime timer = new ElapsedTime();
     double target = 0, referenceAngle = 0, lastError=0;
 
-    public DriveSubsystem(DcMotor FL, DcMotor FR, DcMotor BR, DcMotor BL, IMU imu) {
+    public DriveSubsystem(DcMotorEx FL, DcMotorEx FR, DcMotorEx BR, DcMotorEx BL, IMU imu) {
         this.BL = BL;
         this.FL = FL;
         this.FR = FR;

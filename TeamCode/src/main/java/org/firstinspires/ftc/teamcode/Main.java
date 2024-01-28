@@ -23,7 +23,7 @@ import java.util.List;
 
 public class Main {
     private DcMotorEx BL, BR, FR, FL;
-    private DcMotor inSlideL, inSlideR, outSlideL, outSlideR;
+    private DcMotorEx inSlideL, inSlideR, outSlideL, outSlideR;
     private Servo inArm, drone, inWrist, outArmL, outArmR, outL, outR;
     private CRServo inSpin;
     public Subsystem readSubsystem, writeSubsystem, intakeSubsystem, inSlideSubsystem, planeSubsystem;
