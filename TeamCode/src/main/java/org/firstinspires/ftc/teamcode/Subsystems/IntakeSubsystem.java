@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -9,10 +10,13 @@ public class IntakeSubsystem extends SubsystemBase {
     public static final double armNeutral = .060, wristNeutral = .094;
     public static final double armDown = 1, wristDown = .905; //TODO: figure out these actual values
     private CRServo inSpin;
-    public IntakeSubsystem(CRServo inSpin, Servo inArm, Servo inWrist) {
+    private DigitalChannel intakeLidarL, intakeLidarR;
+    public IntakeSubsystem(CRServo inSpin, Servo inArm, Servo inWrist, DigitalChannel intakeLidarL, DigitalChannel intakeLidarR) {
         this.inArm = inArm;
         this.inSpin = inSpin;
         this.inWrist = inWrist;
+        this.intakeLidarL = intakeLidarL;
+        this.intakeLidarR = intakeLidarR;
     }
 
     public void setArm(double position) {
@@ -25,5 +29,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setInSpin(double power) {
         WriteSubsystem.inSpinNewPower = power;
+    }
+
+    public boolean getLidar() {
+        return intakeLidarL.getState() && intakeLidarR.getState();
     }
 }
