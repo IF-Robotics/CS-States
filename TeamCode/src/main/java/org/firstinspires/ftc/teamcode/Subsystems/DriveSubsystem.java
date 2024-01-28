@@ -119,6 +119,11 @@ public class DriveSubsystem extends SubsystemBase {
         return output;
     }
 
+    public void reset() {
+        imu.resetYaw();
+        target = 0;
+    }
+
     @Override
     public void periodic() {
 //        dashboard = FtcDashboard.getInstance();

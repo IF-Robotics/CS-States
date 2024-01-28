@@ -19,11 +19,11 @@ import org.firstinspires.ftc.teamcode.Commands.IntakeOutcommand;
 @TeleOp
 public class TeleopBase extends CommandOpMode {
     Command teleDrive;
-    Button r2, l2, y2, x2, a2, down2, b2, up2;
+    Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option;
     Main robot;
     GamepadEx gpad1, gpad2;
-    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer;
     Trigger autodrop, autoIntake;
+    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset;
     double loopTime = 0;
     @Override
     public void initialize() {
@@ -32,12 +32,13 @@ public class TeleopBase extends CommandOpMode {
         robot = new Main(true, hardwareMap, telemetry);
         configureButtons();
         configureCommands();
+        bindTriggers();
     }
 
     @Override
     public void run() {
         super.run();
-        bindTriggers();
+//        bindTriggers();
 
         double loop = System.nanoTime();
         telemetry.addData("hz ", 1000000000/(loop-loopTime));
@@ -46,6 +47,7 @@ public class TeleopBase extends CommandOpMode {
 
     public void bindTriggers() {
         robot.driveSubsystem.setDefaultCommand(teleDrive);
+        option.whenPressed(reset);
         //button for intake to go out and pick up pixels, come back when released
         down2.whileHeld(intakeOut);
         down2.whenReleased(intakeIn);
@@ -61,6 +63,7 @@ public class TeleopBase extends CommandOpMode {
         r2.whenPressed(dropL);
         l2.whenPressed(dropR);
         up2.whenPressed(dropBoth);
+        lb2.whenPressed(stopSpin);
         //button to hold to check sensors and autodrop both
 
         //or potentially different modes?
@@ -79,10 +82,12 @@ public class TeleopBase extends CommandOpMode {
         y2 = new GamepadButton(gpad2, GamepadKeys.Button.Y);
         x2 = new GamepadButton(gpad2, GamepadKeys.Button.X);
         a2 = new GamepadButton(gpad2, GamepadKeys.Button.A);
+        lb2 = new GamepadButton(gpad2, GamepadKeys.Button.LEFT_BUMPER);
         up2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_UP);
         down2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_DOWN);
         autoIntake = new Trigger(() -> robot.intakeSubsystem.getLidar());
         autodrop = new Trigger(() -> robot.outtakeSubsystem.getBackdropLidar());
+        option = new GamepadButton(gpad1, GamepadKeys.Button.START);
     }
 
     public void configureCommands() {
@@ -90,11 +95,13 @@ public class TeleopBase extends CommandOpMode {
         dropL = new InstantCommand(()-> robot.outtakeSubsystem.dropL());
         dropR = new InstantCommand(()-> robot.outtakeSubsystem.dropR());
         dropBoth = new InstantCommand(()-> robot.outtakeSubsystem.dropBoth());
-        armMid = new ArmUpCommand(robot.outtakeSubsystem, 1500);
-        armUp = new ArmUpCommand(robot.outtakeSubsystem, 2100);
-        armDown = new ArmDownCommand(robot.outtakeSubsystem, 0);
+        armMid = new ArmUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 1500);
+        armUp = new ArmUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 2100);
+        armDown = new ArmDownCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 0);
+        stopSpin = new InstantCommand(()-> {robot.intakeSubsystem.setInSpin(0);});
         intakeIn = new IntakeInCommand(robot.intakeSubsystem, robot.inSlideSubsystem);
         intakeOut = new IntakeOutcommand(robot.intakeSubsystem, robot.inSlideSubsystem);
         transfer = new InstantCommand(()-> robot.intakeSubsystem.setInSpin(-.35));
+        reset = new InstantCommand(()-> robot.driveSubsystem.reset());
     }
 }

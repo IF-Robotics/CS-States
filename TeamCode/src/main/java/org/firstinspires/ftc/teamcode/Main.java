@@ -86,10 +86,15 @@ public class Main {
             inArm = hardwareMap.get(Servo.class, "inArm");
             drone = hardwareMap.get(Servo.class, "drone");
             inWrist = hardwareMap.get(Servo.class, "inWrist");
+            inArm.setPosition(IntakeSubsystem.armNeutral);
+            inWrist.setPosition(IntakeSubsystem.wristNeutral);
+
             outArmL = hardwareMap.get(Servo.class, "outArmL");
             outArmR = hardwareMap.get(Servo.class, "outArmR");
             outL = hardwareMap.get(Servo.class, "outL");
             outR = hardwareMap.get(Servo.class, "outR");
+            outL.setPosition(OuttakeSubsystem.armNeutral);
+            outR.setPosition(OuttakeSubsystem.armNeutral);
 
             inSpin = hardwareMap.get(CRServo.class, "inSpin");
 

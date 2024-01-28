@@ -20,13 +20,13 @@ public class OuttakeSubsystem extends SubsystemBase {
     Servo outArmL, outArmR, outL, outR;
     private DigitalChannel outtakeLidarL, outtakeLidarR, backdropLidar;
     public static double p=0.003, i=0.2, d=0.000, f=0.00;
-    public static final double armNeutral = .677, armOut = .328;
+    public static final double armNeutral = .678, armOut = .328;
     private PIDFController slideController = new PIDFController(p,i,d,f);
     double slidePower = 0;
 
     private static double lDrop = .13, rDrop = .62, lClose = .50, rClose = .14;
 
-    public static double slidePosition;
+    public static double slidePosition = 0;
     public static FtcDashboard dashboard;
     Telemetry telemetry;
     public OuttakeSubsystem(DcMotor outSlideL, DcMotor outSlideR, Servo outArmL, Servo outArmR, Servo outL, Servo outR, DigitalChannel outtakeLidarL, DigitalChannel outtakeLidarR, DigitalChannel backdropLidar) {
@@ -74,6 +74,9 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     public boolean getPixelLidars() {
         return outtakeLidarL.getState() && outtakeLidarR.getState();
+    }
+    public int getSlidePosition() {
+        return ReadSubsystem.encoderValues.get(outSlideL);
     }
 
     @Override
