@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -28,14 +29,16 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     public static double slidePosition = 0;
     public static FtcDashboard dashboard;
+    Gamepad gamepad2;
     Telemetry telemetry;
-    public OuttakeSubsystem(DcMotor outSlideL, DcMotor outSlideR, Servo outArmL, Servo outArmR, Servo outL, Servo outR, DigitalChannel outtakeLidarL, DigitalChannel outtakeLidarR, DigitalChannel backdropLidar) {
+    public OuttakeSubsystem(DcMotor outSlideL, DcMotor outSlideR, Servo outArmL, Servo outArmR, Servo outL, Servo outR, Gamepad gamepad2, DigitalChannel outtakeLidarL, DigitalChannel outtakeLidarR, DigitalChannel backdropLidar) {
         this.outSlideL = outSlideL;
         this.outSlideR = outSlideR;
         this.outArmL = outArmL;
         this.outArmR = outArmR;
         this.outL = outL;
         this.outR = outR;
+        this.gamepad2 = gamepad2;
         this.outtakeLidarL = outtakeLidarL;
         this.outtakeLidarR = outtakeLidarR;
         this.backdropLidar = backdropLidar;
@@ -43,6 +46,10 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     public void setSlides(int position) {
         slidePosition = position;
+    }
+
+    public void incrementSlides(int add) {
+        slidePosition = slidePosition + add;
     }
 
     public void stopSlides() {
@@ -101,6 +108,10 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+//        if (gamepad2.left_trigger > .1) {
+//            slidePosition += 10 * gamepad2.left_stick_y;
+//        }
+
         slideController = new PIDFController(p,i,d,f);
         slidePower = slideController.calculate(ReadSubsystem.encoderValues.get(outSlideL), slidePosition);
         WriteSubsystem.motorNewPower.put(outSlideL, slidePower);

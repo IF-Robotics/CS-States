@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -40,10 +41,12 @@ public class Main {
     IMU imu;
     HardwareMap hardwareMap;
     Telemetry telemetry;
+    Gamepad gamepad2;
 
-        public Main(Boolean isTeleop, HardwareMap hardwareMap, Telemetry telemetry) {
+        public Main(Boolean isTeleop, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad2) {
             this.hardwareMap = hardwareMap;
             this.telemetry = telemetry;
+            this.gamepad2 = gamepad2;
             initSubsystems();
             if(isTeleop) {
                 initTeleop();
@@ -66,9 +69,10 @@ public class Main {
             imu = hardwareMap.get(IMU.class, "imu");
             //TODO: make this match the actual robot
             IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                    RevHubOrientationOnRobot.UsbFacingDirection.UP));
+                    RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
             imu.initialize(parameters);
+            imu.resetYaw();
 
             BL = hardwareMap.get(DcMotorEx.class, "BL");
             BR = hardwareMap.get(DcMotorEx.class, "BR");
@@ -115,7 +119,7 @@ public class Main {
 
             inSlideSubsystem = new InSlideSubsystem(inSlideL, inSlideR);
             intakeSubsystem = new IntakeSubsystem(inSpin, inArm, inWrist, intakeLidarL, intakeLidarR);
-            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR, outtakeLidarL, outtakeLidarR, backdropLidar);
+            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR, gamepad2, outtakeLidarL, outtakeLidarR, backdropLidar);
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
             driveSubsystem = new DriveSubsystem(FL, FR, BR, BL, imu);
 //            scheduler.registerSubsystem(writeSubsystem, intakeSubsystem, inSlideSubsystem, outtakeSubsystem, driveSubsystem);

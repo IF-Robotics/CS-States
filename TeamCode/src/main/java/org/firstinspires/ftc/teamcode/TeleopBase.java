@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.command.button.Trigger;
@@ -22,17 +21,18 @@ import org.firstinspires.ftc.teamcode.Commands.TeledriveCommand;
 @TeleOp
 public class TeleopBase extends CommandOpMode {
     Command teleDrive;
-    Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option;
+    Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option1, rb2, a1;
+    Trigger lt2;
     Main robot;
     GamepadEx gpad1, gpad2;
     Trigger autodrop, autoIntake;
-    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset, climbDown, climbUp;
+    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset, climbDown, climbUp, manualSlide;
     double loopTime = 0;
     @Override
     public void initialize() {
         gpad1 = new GamepadEx(gamepad1);
         gpad2 = new GamepadEx(gamepad2);
-        robot = new Main(true, hardwareMap, telemetry);
+        robot = new Main(true, hardwareMap, telemetry, gamepad2);
         configureButtons();
         configureCommands();
         bindTriggers();
@@ -56,7 +56,7 @@ public class TeleopBase extends CommandOpMode {
 
     public void bindTriggers() {
         robot.driveSubsystem.setDefaultCommand(teleDrive);
-        option.whenPressed(reset);
+        option1.whenPressed(reset);
         //button for intake to go out and pick up pixels, come back when released
         down2.whileHeld(intakeOut);
         down2.whenReleased(intakeIn);
@@ -68,6 +68,10 @@ public class TeleopBase extends CommandOpMode {
         y2.whenPressed(armUp);
         b2.whenPressed(armMid);
         a2.whenPressed(armDown);
+
+        //manual slide
+        lt2.whileActiveContinuous(manualSlide);
+
         //button to drop left and right
         r2.whenPressed(dropL);
         l2.whenPressed(dropR);
@@ -81,6 +85,8 @@ public class TeleopBase extends CommandOpMode {
         //trigger to come back when 2 pixels are collected
 
         //climb: press and hold for to go out and then release to go back
+        rb2.whenPressed(climbUp);
+        rb2.whenReleased(climbDown);
 
         //autoIntake.whenActive() TODO: Code Blinken or rumble to indicate pixels intaken
         //TODO: Code backdrop lidar sensor
@@ -95,13 +101,16 @@ public class TeleopBase extends CommandOpMode {
         b2 = new GamepadButton(gpad2, GamepadKeys.Button.B);
         y2 = new GamepadButton(gpad2, GamepadKeys.Button.Y);
         x2 = new GamepadButton(gpad2, GamepadKeys.Button.X);
+        a1 = new GamepadButton(gpad1, GamepadKeys.Button.A);
         a2 = new GamepadButton(gpad2, GamepadKeys.Button.A);
         lb2 = new GamepadButton(gpad2, GamepadKeys.Button.LEFT_BUMPER);
         up2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_UP);
+        rb2 = new GamepadButton(gpad2, GamepadKeys.Button.RIGHT_BUMPER);
         down2 = new GamepadButton(gpad2, GamepadKeys.Button.DPAD_DOWN);
         autoIntake = new Trigger(() -> robot.intakeSubsystem.getLidar());
         autodrop = new Trigger(() -> robot.outtakeSubsystem.getBackdropLidar());
-        option = new GamepadButton(gpad1, GamepadKeys.Button.START);
+        option1 = new GamepadButton(gpad1, GamepadKeys.Button.START);
+        lt2 = new Trigger(()-> (gamepad2.left_trigger > .2));
 
     }
 
@@ -118,7 +127,8 @@ public class TeleopBase extends CommandOpMode {
         intakeOut = new IntakeOutcommand(robot.intakeSubsystem, robot.inSlideSubsystem);
         transfer = new InstantCommand(()-> robot.intakeSubsystem.setInSpin(-.35));
         reset = new InstantCommand(()-> robot.driveSubsystem.reset());
-        climbDown = new ClimbDownCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 0);
-        climbUp = new ClimbUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 0);
+        climbDown = new ClimbDownCommand(robot.outtakeSubsystem, robot.intakeSubsystem);
+        climbUp = new ClimbUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem);
+        manualSlide = new InstantCommand(()-> robot.outtakeSubsystem.incrementSlides((int) (-15 * gamepad2.left_stick_y)), robot.outtakeSubsystem);
     }
 }

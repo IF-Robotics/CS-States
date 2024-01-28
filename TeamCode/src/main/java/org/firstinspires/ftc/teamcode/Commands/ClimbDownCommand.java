@@ -9,36 +9,29 @@ public class ClimbDownCommand extends CommandBase {
 
     OuttakeSubsystem outtakeSubsystem;
     IntakeSubsystem intakeSubsystem;
-    int slidePosition;
-    int currentPosition;
 
-    public ClimbDownCommand(OuttakeSubsystem outtakeSubsystem, IntakeSubsystem intakeSubsystem, int slidePosition) {
+    public ClimbDownCommand(OuttakeSubsystem outtakeSubsystem, IntakeSubsystem intakeSubsystem) {
         this.outtakeSubsystem = outtakeSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         addRequirements(outtakeSubsystem, intakeSubsystem);
-
-        this.slidePosition = slidePosition;
     }
 
     @Override
     public void initialize() {
-        currentPosition = outtakeSubsystem.getSlidePosition();
-
+        outtakeSubsystem.setSlides(0);
     }
 
     @Override
     public void execute() {
-        outtakeSubsystem.powerSlides(-0.5);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return outtakeSubsystem.getSlidePosition() < 500;
     }
 
     @Override
     public void end(boolean interrupted) {
-        outtakeSubsystem.stopSlides();
     }
 
 }
