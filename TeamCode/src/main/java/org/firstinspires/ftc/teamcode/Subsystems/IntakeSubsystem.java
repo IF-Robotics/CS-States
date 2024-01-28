@@ -37,6 +37,12 @@ public class IntakeSubsystem extends SubsystemBase {
         return WriteSubsystem.servoNewPosition.get(inArm);
     }
     public boolean getLidar() {
-        return intakeLidarL.getState() && intakeLidarR.getState();
+        return !intakeLidarL.getState() && !intakeLidarR.getState();
+    }
+    public boolean getLeftLidar() {
+        return !intakeLidarL.getState();
+    }
+    public boolean getRightLidar() {
+        return !intakeLidarR.getState();
     }
 }

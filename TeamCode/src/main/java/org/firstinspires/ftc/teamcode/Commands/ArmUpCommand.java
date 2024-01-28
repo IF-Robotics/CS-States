@@ -15,7 +15,7 @@ public class ArmUpCommand extends CommandBase {
     IntakeSubsystem intakeSubsystem;
     int slidePosition;
     double armPosition;
-    public static double increment = .02;
+    public static double increment = .001;
     ElapsedTime timer = new ElapsedTime();
     public ArmUpCommand(OuttakeSubsystem outtakeSubsystem, IntakeSubsystem intakeSubsystem, int slidePosition) {
         this.outtakeSubsystem = outtakeSubsystem;
@@ -29,7 +29,7 @@ public class ArmUpCommand extends CommandBase {
     public void initialize() {
         timer.reset();
         intakeSubsystem.setWrist(.6);
-        armPosition = intakeSubsystem.getArmPosition();
+        armPosition = outtakeSubsystem.getArm();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ArmUpCommand extends CommandBase {
         if(timer.milliseconds() > 150) {
             outtakeSubsystem.setSlides(slidePosition);
         }
-        armPosition = Math.max(armPosition - increment, OuttakeSubsystem.armOut);
+        armPosition = Math.min(armPosition + increment, OuttakeSubsystem.armOut);
         outtakeSubsystem.setArm(armPosition);
     }
 

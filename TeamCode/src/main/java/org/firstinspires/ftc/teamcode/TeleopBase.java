@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Commands.ArmDownCommand;
 import org.firstinspires.ftc.teamcode.Commands.ArmUpCommand;
+import org.firstinspires.ftc.teamcode.Commands.ClimbDownCommand;
+import org.firstinspires.ftc.teamcode.Commands.ClimbUpCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeOutcommand;
 import org.firstinspires.ftc.teamcode.Commands.TeledriveCommand;
@@ -24,7 +26,7 @@ public class TeleopBase extends CommandOpMode {
     Main robot;
     GamepadEx gpad1, gpad2;
     Trigger autodrop, autoIntake;
-    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset;
+    Command straighten, dropL, dropR, dropBoth, closeBoth, armMid, armDown, armUp, intakeIn, intakeOut, transfer, stopSpin, reset, climbDown, climbUp;
     double loopTime = 0;
     @Override
     public void initialize() {
@@ -43,6 +45,12 @@ public class TeleopBase extends CommandOpMode {
 
         double loop = System.nanoTime();
         telemetry.addData("hz ", 1000000000/(loop-loopTime));
+        telemetry.addData("Intake Left Lidar", robot.intakeSubsystem.getLeftLidar());
+        telemetry.addData("Intake Right Lidar", robot.intakeSubsystem.getRightLidar());
+        telemetry.addData("Outtake Left Lidar", robot.outtakeSubsystem.getLeftLidar());
+        telemetry.addData("Outtake Right Lidar", robot.outtakeSubsystem.getRightLidar());
+        telemetry.addData("Backdrop Lidar", robot.outtakeSubsystem.getBackdropLidar());
+        telemetry.addData("OuttakeArm", robot.outtakeSubsystem.getArm());
         loopTime = loop;
     }
 
@@ -65,6 +73,8 @@ public class TeleopBase extends CommandOpMode {
         l2.whenPressed(dropR);
         up2.whenPressed(dropBoth);
         lb2.whenPressed(stopSpin);
+
+
         //button to hold to check sensors and autodrop both
 
         //or potentially different modes?
@@ -73,6 +83,9 @@ public class TeleopBase extends CommandOpMode {
         //climb: press and hold for to go out and then release to go back
 
         //autoIntake.whenActive() TODO: Code Blinken or rumble to indicate pixels intaken
+        //TODO: Code backdrop lidar sensor
+
+
     }
 
 
@@ -89,6 +102,7 @@ public class TeleopBase extends CommandOpMode {
         autoIntake = new Trigger(() -> robot.intakeSubsystem.getLidar());
         autodrop = new Trigger(() -> robot.outtakeSubsystem.getBackdropLidar());
         option = new GamepadButton(gpad1, GamepadKeys.Button.START);
+
     }
 
     public void configureCommands() {
@@ -104,5 +118,7 @@ public class TeleopBase extends CommandOpMode {
         intakeOut = new IntakeOutcommand(robot.intakeSubsystem, robot.inSlideSubsystem);
         transfer = new InstantCommand(()-> robot.intakeSubsystem.setInSpin(-.35));
         reset = new InstantCommand(()-> robot.driveSubsystem.reset());
+        climbDown = new ClimbDownCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 0);
+        climbUp = new ClimbUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem, 0);
     }
 }

@@ -45,9 +45,20 @@ public class OuttakeSubsystem extends SubsystemBase {
         slidePosition = position;
     }
 
+    public void stopSlides() {
+        slidePower = 0.0;
+    }
+
+    public void powerSlides(double slidePower) {
+        this.slidePower = slidePower;
+    }
+
     public void setArm(double position) {
         WriteSubsystem.servoNewPosition.put(outArmL, position);
         WriteSubsystem.servoNewPosition.put(outArmR, position);
+    }
+    public double getArm() {
+        return outArmL.getPosition();
     }
 
     public void dropL(){
@@ -69,12 +80,21 @@ public class OuttakeSubsystem extends SubsystemBase {
     }
 
     public boolean getBackdropLidar() {
-        return backdropLidar.getState();
+        return !backdropLidar.getState();
     }
 
     public boolean getPixelLidars() {
-        return outtakeLidarL.getState() && outtakeLidarR.getState();
+        return !outtakeLidarL.getState() && !outtakeLidarR.getState();
     }
+
+    public boolean getLeftLidar() {
+        return !outtakeLidarL.getState();
+    }
+
+    public boolean getRightLidar() {
+        return !outtakeLidarR.getState();
+    }
+
     public int getSlidePosition() {
         return ReadSubsystem.encoderValues.get(outSlideL);
     }
@@ -93,6 +113,7 @@ public class OuttakeSubsystem extends SubsystemBase {
         telemetry.addData("currentSlide", ReadSubsystem.encoderValues.get(outSlideL));
         telemetry.addData("slidePoewr", slidePower);
         telemetry.addData("outL Amps", ((DcMotorEx) outSlideL).getCurrent(CurrentUnit.AMPS));
+
         telemetry.update();
     }
 }
