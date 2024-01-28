@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @Config
 public class DriveSubsystem extends SubsystemBase {
@@ -125,6 +126,8 @@ public class DriveSubsystem extends SubsystemBase {
 //        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 //        telemetry.addData("target", target);
 //        telemetry.addData("current",ReadSubsystem.sensorValues.get(imu));
-//        telemetry.update();
+        telemetry.addData("DriveCurrent", FL.getCurrent(CurrentUnit.AMPS) + BR.getCurrent(CurrentUnit.AMPS) + BL.getCurrent(CurrentUnit.AMPS) + FR.getCurrent(CurrentUnit.AMPS));
+        telemetry.update();
+
     }
 }
