@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.OuttakeSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.WriteSubsystem;
+
 @Config
 
 public class ArmUpCommand extends CommandBase {
@@ -27,7 +29,7 @@ public class ArmUpCommand extends CommandBase {
     public void initialize() {
         timer.reset();
         intakeSubsystem.setWrist(.6);
-        armPosition = OuttakeSubsystem.armNeutral; 
+        armPosition = intakeSubsystem.getArmPosition();
     }
 
     @Override

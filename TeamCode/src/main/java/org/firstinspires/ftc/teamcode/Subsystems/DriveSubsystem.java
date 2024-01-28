@@ -57,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
         this.target = target;
     }
 
-    public void teleDrive(Gamepad gamepad1) {
+    public void teleDrive(Gamepad gamepad1, double power) {
         double botHeading = ReadSubsystem.sensorValues.get(imu);
 
         referenceAngle = Math.toRadians(target);
@@ -88,10 +88,10 @@ public class DriveSubsystem extends SubsystemBase {
         double backLeftPower = (rotY - rotX + rx) / denominator;
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
-        WriteSubsystem.motorNewPower.put(FL, frontLeftPower);
-        WriteSubsystem.motorNewPower.put(BL, backLeftPower);
-        WriteSubsystem.motorNewPower.put(FR, frontRightPower);
-        WriteSubsystem.motorNewPower.put(BR, backRightPower);
+        WriteSubsystem.motorNewPower.put(FL, frontLeftPower * power);
+        WriteSubsystem.motorNewPower.put(BL, backLeftPower * power);
+        WriteSubsystem.motorNewPower.put(FR, frontRightPower * power);
+        WriteSubsystem.motorNewPower.put(BR, backRightPower * power);
     }
 
     public double angleWrap(double radians) {

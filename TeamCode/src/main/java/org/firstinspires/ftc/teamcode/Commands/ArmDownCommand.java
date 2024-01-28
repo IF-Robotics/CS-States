@@ -19,6 +19,7 @@ public class ArmDownCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        outtakeSubsystem.dropBoth();
         outtakeSubsystem.setArm(OuttakeSubsystem.armNeutral);
         outtakeSubsystem.setSlides(slidePosition);
         outtakeSubsystem.closeBoth();

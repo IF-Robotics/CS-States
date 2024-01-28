@@ -28,4 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public void setInSpin(double power) {
         WriteSubsystem.inSpinNewPower = power;
     }
+
+    public double getArmPosition() {
+        return WriteSubsystem.servoNewPosition.get(inArm);
+    }
 }

@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Commands.ArmDownCommand;
 import org.firstinspires.ftc.teamcode.Commands.ArmUpCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeOutcommand;
+import org.firstinspires.ftc.teamcode.Commands.TeledriveCommand;
 
 @TeleOp
 public class TeleopBase extends CommandOpMode {
@@ -86,7 +87,7 @@ public class TeleopBase extends CommandOpMode {
     }
 
     public void configureCommands() {
-        teleDrive = new RunCommand(()-> robot.driveSubsystem.teleDrive(gamepad1), robot.driveSubsystem);
+        teleDrive = new TeledriveCommand(robot.driveSubsystem, gamepad1);
         dropL = new InstantCommand(()-> robot.outtakeSubsystem.dropL());
         dropR = new InstantCommand(()-> robot.outtakeSubsystem.dropR());
         dropBoth = new InstantCommand(()-> robot.outtakeSubsystem.dropBoth());
