@@ -35,7 +35,7 @@ public class ClimbUpCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return outtakeSubsystem.getSlidePosition() > 1500;
+        return outtakeSubsystem.getSlidePosition() > 1814;
     }
 
 }

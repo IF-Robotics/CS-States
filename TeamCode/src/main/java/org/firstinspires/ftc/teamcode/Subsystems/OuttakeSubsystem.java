@@ -25,7 +25,7 @@ public class OuttakeSubsystem extends SubsystemBase {
     private PIDFController slideController = new PIDFController(p,i,d,f);
     double slidePower = 0;
 
-    private static double lDrop = .13, rDrop = .62, lClose = .50, rClose = .14;
+    public static double lDrop = .13, rDrop = .62, lClose = .50, rClose = .14;
 
     public static double slidePosition = 0;
     public static FtcDashboard dashboard;
@@ -42,6 +42,9 @@ public class OuttakeSubsystem extends SubsystemBase {
         this.outtakeLidarL = outtakeLidarL;
         this.outtakeLidarR = outtakeLidarR;
         this.backdropLidar = backdropLidar;
+
+        outArmL.setPosition(armNeutral);
+        closeBoth();
     }
 
     public void setSlides(int position) {

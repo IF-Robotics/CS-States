@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Commands.TeledriveCommand;
 @TeleOp
 public class TeleopBase extends CommandOpMode {
     Command teleDrive;
-    Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option1, rb2, a1;
+    Button r2, l2, y2, x2, a2, down2, b2, up2, lb2, option1, rb2, a1, back2;
     Trigger lt2;
     Main robot;
     GamepadEx gpad1, gpad2;
@@ -78,6 +78,7 @@ public class TeleopBase extends CommandOpMode {
         up2.whenPressed(dropBoth);
         lb2.whenPressed(stopSpin);
 
+        back2.whenPressed(closeBoth);
 
         //button to hold to check sensors and autodrop both
 
@@ -111,7 +112,7 @@ public class TeleopBase extends CommandOpMode {
         autodrop = new Trigger(() -> robot.outtakeSubsystem.getBackdropLidar());
         option1 = new GamepadButton(gpad1, GamepadKeys.Button.START);
         lt2 = new Trigger(()-> (gamepad2.left_trigger > .2));
-
+        back2 = new GamepadButton(gpad2, GamepadKeys.Button.BACK);
     }
 
     public void configureCommands() {
@@ -130,5 +131,6 @@ public class TeleopBase extends CommandOpMode {
         climbDown = new ClimbDownCommand(robot.outtakeSubsystem, robot.intakeSubsystem);
         climbUp = new ClimbUpCommand(robot.outtakeSubsystem, robot.intakeSubsystem);
         manualSlide = new InstantCommand(()-> robot.outtakeSubsystem.incrementSlides((int) (-15 * gamepad2.left_stick_y)), robot.outtakeSubsystem);
+        closeBoth = new InstantCommand(()-> robot.outtakeSubsystem.closeBoth(), robot.outtakeSubsystem);
     }
 }

@@ -29,7 +29,7 @@ public class ArmDownCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(timer.milliseconds() > 300) {
+        if(timer.milliseconds() > 500) {
             outtakeSubsystem.setArm(OuttakeSubsystem.armNeutral);
             outtakeSubsystem.setSlides(slidePosition);
             intakeSubsystem.setWrist(.6);

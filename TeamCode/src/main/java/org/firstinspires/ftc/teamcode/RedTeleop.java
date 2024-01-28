@@ -5,7 +5,7 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
-public class BlueTeleop extends TeleopBase{
+public class RedTeleop extends TeleopBase{
     private Command straighten;
 
     @Override
@@ -17,7 +17,7 @@ public class BlueTeleop extends TeleopBase{
     @Override
     public void configureCommands() {
         super.configureCommands();
-        straighten = new RunCommand(()-> robot.driveSubsystem.straighten(-90));
+        straighten = new RunCommand(()-> robot.driveSubsystem.straighten(90));
     }
 
 }

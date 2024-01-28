@@ -126,13 +126,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-//        dashboard = FtcDashboard.getInstance();
-//        telemetry = dashboard.getTelemetry();
-//        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-//        telemetry.addData("target", target);
-//        telemetry.addData("current",ReadSubsystem.sensorValues.get(imu));
-//        telemetry.addData("DriveCurrent", FL.getCurrent(CurrentUnit.AMPS) + BR.getCurrent(CurrentUnit.AMPS) + BL.getCurrent(CurrentUnit.AMPS) + FR.getCurrent(CurrentUnit.AMPS));
-//        telemetry.update(); TODO: figure out why this isn't compiling
-
+        dashboard = FtcDashboard.getInstance();
+        telemetry = dashboard.getTelemetry();
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry.addData("headingLockTarget", target);
+        telemetry.addData("current",ReadSubsystem.sensorValues.get(imu));
+        telemetry.addData("DriveCurrent", FL.getCurrent(CurrentUnit.AMPS) + BR.getCurrent(CurrentUnit.AMPS) + BL.getCurrent(CurrentUnit.AMPS) + FR.getCurrent(CurrentUnit.AMPS));
+        telemetry.update();
     }
 }

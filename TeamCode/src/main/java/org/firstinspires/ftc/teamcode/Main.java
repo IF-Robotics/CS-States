@@ -97,8 +97,8 @@ public class Main {
             outArmR = hardwareMap.get(Servo.class, "outArmR");
             outL = hardwareMap.get(Servo.class, "outL");
             outR = hardwareMap.get(Servo.class, "outR");
-            outL.setPosition(OuttakeSubsystem.armNeutral);
-            outR.setPosition(OuttakeSubsystem.armNeutral);
+            outArmL.setPosition(OuttakeSubsystem.armNeutral);
+            outArmR.setPosition(OuttakeSubsystem.armNeutral);
 
             inSpin = hardwareMap.get(CRServo.class, "inSpin");
 
@@ -111,8 +111,11 @@ public class Main {
             intakeLidarL.setMode(DigitalChannel.Mode.INPUT);
             intakeLidarR.setMode(DigitalChannel.Mode.INPUT);
             outtakeLidarL.setMode(DigitalChannel.Mode.INPUT);
+
             outtakeLidarR.setMode(DigitalChannel.Mode.INPUT);
             backdropLidar.setMode(DigitalChannel.Mode.INPUT);
+            outL.setPosition(OuttakeSubsystem.lClose);
+            outR.setPosition(OuttakeSubsystem.rClose);
 
             Servo[] writeServos = {inArm, drone, inWrist, outArmL, outArmR, outL, outR};
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
