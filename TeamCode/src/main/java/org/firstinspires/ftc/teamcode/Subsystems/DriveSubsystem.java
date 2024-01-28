@@ -1,22 +1,34 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
+@Config
 public class DriveSubsystem extends SubsystemBase {
-    DcMotor FL, FR, BR, BL;
+    DcMotorEx FL, FR, BR, BL;
     IMU imu;
     double integralSum = 0;
-    double Kp=1,Ki=.1,Kd=0.0001;
+    public static double Kp=1,Ki=.1,Kd=0.0001;
     ElapsedTime timer = new ElapsedTime();
     double target = 0, referenceAngle = 0, lastError=0;
+    public static FtcDashboard dashboard;
+    Telemetry telemetry;
 
-    public DriveSubsystem(DcMotor FL, DcMotor FR, DcMotor BR, DcMotor BL, IMU imu) {
+    public DriveSubsystem(DcMotorEx FL, DcMotorEx FR, DcMotorEx BR, DcMotorEx BL, IMU imu) {
         this.BL = BL;
         this.FL = FL;
         this.FR = FR;
@@ -45,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
         this.target = target;
     }
 
-    public void teleDrive(Gamepad gamepad1) {
+    public void teleDrive(Gamepad gamepad1, double power) {
         double botHeading = ReadSubsystem.sensorValues.get(imu);
 
         referenceAngle = Math.toRadians(target);
@@ -76,18 +88,10 @@ public class DriveSubsystem extends SubsystemBase {
         double backLeftPower = (rotY - rotX + rx) / denominator;
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
-        FL.setPower(frontLeftPower);
-        BL.setPower(backLeftPower);
-        FR.setPower(frontRightPower);
-        BR.setPower(backRightPower);
-        WriteSubsystem.motorNewPower.put(FL, frontLeftPower);
-        WriteSubsystem.motorNewPower.put(BL, backLeftPower);
-        WriteSubsystem.motorNewPower.put(FR, frontRightPower);
-        WriteSubsystem.motorNewPower.put(BR, backRightPower);
-//        FL.setPower(gamepad1.left_stick_y);
-//        BL.setPower(gamepad1.left_stick_y);
-//        FR.setPower(gamepad1.right_stick_y);
-//        BR.setPower(gamepad1.right_stick_y);
+        WriteSubsystem.motorNewPower.put(FL, frontLeftPower * power);
+        WriteSubsystem.motorNewPower.put(BL, backLeftPower * power);
+        WriteSubsystem.motorNewPower.put(FR, frontRightPower * power);
+        WriteSubsystem.motorNewPower.put(BR, backRightPower * power);
     }
 
     public double angleWrap(double radians) {
@@ -113,5 +117,22 @@ public class DriveSubsystem extends SubsystemBase {
 
         double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
         return output;
+    }
+
+    public void reset() {
+        imu.resetYaw();
+        target = 0;
+    }
+
+    @Override
+    public void periodic() {
+//        dashboard = FtcDashboard.getInstance();
+//        telemetry = dashboard.getTelemetry();
+//        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+//        telemetry.addData("target", target);
+//        telemetry.addData("current",ReadSubsystem.sensorValues.get(imu));
+//        telemetry.addData("DriveCurrent", FL.getCurrent(CurrentUnit.AMPS) + BR.getCurrent(CurrentUnit.AMPS) + BL.getCurrent(CurrentUnit.AMPS) + FR.getCurrent(CurrentUnit.AMPS));
+//        telemetry.update(); TODO: figure out why this isn't compiling
+
     }
 }

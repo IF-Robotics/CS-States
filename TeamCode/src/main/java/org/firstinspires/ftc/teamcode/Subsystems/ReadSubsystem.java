@@ -28,6 +28,8 @@ public class ReadSubsystem extends SubsystemBase {
         updateTelemetry = new HashMap<>();
         this.driveMotors = drivemotors;
         for(DcMotor m: encoders) {
+            m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             encoderValues.put(m, 0);
         }
         this.imu = imu;
@@ -40,6 +42,7 @@ public class ReadSubsystem extends SubsystemBase {
             encoderValues.put(m, m.getCurrentPosition());
         }
         sensorValues.put(imu, imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+        updateTelemetry.put("imu", sensorValues.get(imu));
 
         current = 0;
         for(DcMotorEx m: driveMotors) {
@@ -50,6 +53,7 @@ public class ReadSubsystem extends SubsystemBase {
         for(String s: updateTelemetry.keySet()) {
             telemetry.addData(s, updateTelemetry.get(s));
         }
+        updateTelemetry.clear();
 
         telemetry.update();
     }
