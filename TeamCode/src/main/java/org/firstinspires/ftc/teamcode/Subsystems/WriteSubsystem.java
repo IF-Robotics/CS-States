@@ -18,6 +18,8 @@ public class WriteSubsystem extends SubsystemBase {
     public static double inSpinNewPower;
     double tempPower = 0, tempPosition = 0;
 
+    public static boolean isPixelTransfered = false, isArmUp = false, isExtendOut = false;
+
     public WriteSubsystem(DcMotor[] motors, Servo[] servos, CRServo inSpin) {
         motorCurrentPower = new HashMap<>();
         motorNewPower = new HashMap<>();
@@ -40,7 +42,7 @@ public class WriteSubsystem extends SubsystemBase {
     public void periodic() {
         //check all motors and update if needed
         for(DcMotor m: motorCurrentPower.keySet()) {
-            tempPower = Math.round(motorNewPower.get(m) * 1000) / 1000;
+            tempPower = motorNewPower.get(m);//Math.round(motorNewPower.get(m) * 1000) / 1000;
             if(tempPower != motorCurrentPower.get(m)) {
                 m.setPower(tempPower);
                 motorCurrentPower.put(m, tempPower);

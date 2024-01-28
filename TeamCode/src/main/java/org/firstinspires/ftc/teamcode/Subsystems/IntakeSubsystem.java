@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem extends SubsystemBase {
     private Servo inArm, inWrist;
-    public static double armNeutral, wristNeutral;
-    public static double armDown, wristDown;
+    public static final double armNeutral = .060, wristNeutral = .094;
+    public static final double armDown = 1, wristDown = .905; //TODO: figure out these actual values
     private CRServo inSpin;
     public IntakeSubsystem(CRServo inSpin, Servo inArm, Servo inWrist) {
         this.inArm = inArm;

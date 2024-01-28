@@ -28,6 +28,8 @@ public class ReadSubsystem extends SubsystemBase {
         updateTelemetry = new HashMap<>();
         this.driveMotors = drivemotors;
         for(DcMotor m: encoders) {
+            m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             encoderValues.put(m, 0);
         }
         this.imu = imu;

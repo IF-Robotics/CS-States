@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.InSlideSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.OuttakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ReadSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.WriteSubsystem;
@@ -26,9 +28,11 @@ public class Main {
     private DcMotorEx inSlideL, inSlideR, outSlideL, outSlideR;
     private Servo inArm, drone, inWrist, outArmL, outArmR, outL, outR;
     private CRServo inSpin;
-    public Subsystem readSubsystem, writeSubsystem, intakeSubsystem, inSlideSubsystem, planeSubsystem;
+    public Subsystem readSubsystem, writeSubsystem; //intakeSubsystem, inSlideSubsystem, planeSubsystem;
     public DriveSubsystem driveSubsystem;
     public OuttakeSubsystem outtakeSubsystem;
+    public IntakeSubsystem intakeSubsystem;
+    public InSlideSubsystem inSlideSubsystem;
     IMU imu;
     HardwareMap hardwareMap;
     Telemetry telemetry;
@@ -62,24 +66,20 @@ public class Main {
                     RevHubOrientationOnRobot.UsbFacingDirection.UP));
             imu.initialize(parameters);
 
-//            BL = new Motor(hardwareMap, "BL");
-//            BR = new Motor(hardwareMap, "BR");
-//            FR = new Motor(hardwareMap, "FR");
-//            FL = new Motor(hardwareMap, "FL");
             BL = hardwareMap.get(DcMotorEx.class, "BL");
             BR = hardwareMap.get(DcMotorEx.class, "BR");
             FR = hardwareMap.get(DcMotorEx.class, "FR");
             FL = hardwareMap.get(DcMotorEx.class, "FL");
 
-            /*inSlideL = new Motor(hardwareMap, "inSlideL");
-            inSlideR = new Motor(hardwareMap, "inSlideR");
-            outSlideL = new Motor(hardwareMap, "outSlideL");*/
+            inSlideL = hardwareMap.get(DcMotor.class, "inSlideL");
+            inSlideR = hardwareMap.get(DcMotor.class, "inSlideR");
             outSlideR = hardwareMap.get(DcMotorEx.class, "outSlideR");
+            outSlideL = hardwareMap.get(DcMotorEx.class, "outSlideL");
             outSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            DcMotor[] writeMotors = {BL, BR, FR, FL};//, inSlideL, inSlideR, outSlideL, outSlideR};
+            DcMotor[] writeMotors = {BL, BR, FR, FL, inSlideL, inSlideR, outSlideL, outSlideR};
 
-            /*inArm = hardwareMap.get(Servo.class, "inArm");
+            inArm = hardwareMap.get(Servo.class, "inArm");
             drone = hardwareMap.get(Servo.class, "drone");
             inWrist = hardwareMap.get(Servo.class, "inWrist");
             outArmL = hardwareMap.get(Servo.class, "outArmL");
@@ -87,22 +87,21 @@ public class Main {
             outL = hardwareMap.get(Servo.class, "outL");
             outR = hardwareMap.get(Servo.class, "outR");
 
+            inSpin = hardwareMap.get(CRServo.class, "inSpin");
+
             Servo[] writeServos = {inArm, drone, inWrist, outArmL, outArmR, outL, outR};
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
 
             inSlideSubsystem = new InSlideSubsystem(inSlideL, inSlideR);
             intakeSubsystem = new IntakeSubsystem(inSpin, inArm, inWrist);
-            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR);*/
-
-            Servo[] writeServos = {};
-            inSpin = hardwareMap.get(CRServo.class, "inSpin");
+            outtakeSubsystem = new OuttakeSubsystem(outSlideL, outSlideR, outArmL, outArmR,outL, outR);
             writeSubsystem = new WriteSubsystem(writeMotors, writeServos, inSpin);
             driveSubsystem = new DriveSubsystem(FL, FR, BR, BL, imu);
 //            scheduler.registerSubsystem(writeSubsystem, intakeSubsystem, inSlideSubsystem, outtakeSubsystem, driveSubsystem);
         }
 
         public void initTeleop() {
-            DcMotor[] motorEncoders = {};//inSlideR, outSlideR};
+            DcMotor[] motorEncoders = {outSlideL, inSlideL};//inSlideR, outSlideR};
             DcMotorEx[] driveMotors = {FL, FR, BR, BL};
             readSubsystem = new ReadSubsystem(motorEncoders, driveMotors, imu, telemetry);
         }
