@@ -66,8 +66,8 @@ public class Main {
             imu = hardwareMap.get(IMU.class, "imu");
             //TODO: make this match the actual robot
             IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                    RevHubOrientationOnRobot.UsbFacingDirection.UP));
+                    RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
             imu.initialize(parameters);
 
             BL = hardwareMap.get(DcMotorEx.class, "BL");
