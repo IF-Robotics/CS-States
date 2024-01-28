@@ -12,6 +12,7 @@ public class TeledriveCommand extends CommandBase {
     public TeledriveCommand(DriveSubsystem driveSubsystem, Gamepad gamepad1) {
         this.driveSubsystem = driveSubsystem;
         this.gamepad1 = gamepad1;
+        addRequirements(driveSubsystem);
     }
 
     @Override

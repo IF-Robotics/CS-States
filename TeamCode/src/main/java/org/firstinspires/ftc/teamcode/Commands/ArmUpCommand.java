@@ -37,12 +37,12 @@ public class ArmUpCommand extends CommandBase {
         if(timer.milliseconds() > 150) {
             outtakeSubsystem.setSlides(slidePosition);
         }
-        armPosition = armPosition - increment;
+        armPosition = Math.max(armPosition - increment, OuttakeSubsystem.armOut);
         outtakeSubsystem.setArm(armPosition);
     }
 
     @Override
     public boolean isFinished() {
-        return armPosition < OuttakeSubsystem.armOut;
+        return armPosition < OuttakeSubsystem.armOut && timer.milliseconds() > 200;
     }
 }
