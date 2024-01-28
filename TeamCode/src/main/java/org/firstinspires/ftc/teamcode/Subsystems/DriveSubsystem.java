@@ -8,16 +8,18 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @Config
 public class DriveSubsystem extends SubsystemBase {
-    DcMotor FL, FR, BR, BL;
+    DcMotorEx FL, FR, BR, BL;
     IMU imu;
     double integralSum = 0;
     public static double Kp=1,Ki=.1,Kd=0.0001;
@@ -26,7 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
     public static FtcDashboard dashboard;
     Telemetry telemetry;
 
-    public DriveSubsystem(DcMotor FL, DcMotor FR, DcMotor BR, DcMotor BL, IMU imu) {
+    public DriveSubsystem(DcMotorEx FL, DcMotorEx FR, DcMotorEx BR, DcMotorEx BL, IMU imu) {
         this.BL = BL;
         this.FL = FL;
         this.FR = FR;
@@ -129,6 +131,8 @@ public class DriveSubsystem extends SubsystemBase {
 //        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 //        telemetry.addData("target", target);
 //        telemetry.addData("current",ReadSubsystem.sensorValues.get(imu));
-//        telemetry.update();
+        telemetry.addData("DriveCurrent", FL.getCurrent(CurrentUnit.AMPS) + BR.getCurrent(CurrentUnit.AMPS) + BL.getCurrent(CurrentUnit.AMPS) + FR.getCurrent(CurrentUnit.AMPS));
+        telemetry.update();
+
     }
 }

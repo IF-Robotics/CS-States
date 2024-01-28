@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Main {
     private DcMotorEx BL, BR, FR, FL;
-    private DcMotor inSlideL, inSlideR, outSlideL, outSlideR;
+    private DcMotorEx inSlideL, inSlideR, outSlideL, outSlideR;
     private Servo inArm, drone, inWrist, outArmL, outArmR, outL, outR;
     private CRServo inSpin;
     public Subsystem readSubsystem, writeSubsystem; //intakeSubsystem, inSlideSubsystem, planeSubsystem;
@@ -71,8 +71,8 @@ public class Main {
             FR = hardwareMap.get(DcMotorEx.class, "FR");
             FL = hardwareMap.get(DcMotorEx.class, "FL");
 
-            inSlideL = hardwareMap.get(DcMotor.class, "inSlideL");
-            inSlideR = hardwareMap.get(DcMotor.class, "inSlideR");
+            inSlideL = hardwareMap.get(DcMotorEx.class, "inSlideL");
+            inSlideR = hardwareMap.get(DcMotorEx.class, "inSlideR");
             outSlideR = hardwareMap.get(DcMotorEx.class, "outSlideR");
             outSlideL = hardwareMap.get(DcMotorEx.class, "outSlideL");
             outSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
